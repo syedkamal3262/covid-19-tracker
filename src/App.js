@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React, { Suspense } from "react";
+import TotalCases from "./components/TotalCases";
+import { createResource } from "./fetch";
+import Img from "./images/covid 19.png";
+import CountryCases from "./components/CountryCases";
+import CountryInput from "./components/CountryInput";
+import ErrorBoundary from "./components/ErrorBoundary";
 
-function App() {
+const resource = createResource();
+
+export default function App() {
+  const [country, setCountry] = React.useState("");
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ErrorBoundary>
+        <div className="header">
+          <img width="300" height="auto" src={Img} alt="loading" />
+        </div>
+        <Suspense fallback={<h1>Loading profile...</h1>}>
+          <TotalCases resource={resource} />
+        </Suspense>
+
+        <CountryInput
+          getCountry={(e) => {
+            setCountry(e);
+          }}
+        />
+
+        <Suspense fallback={<h1>Loading profile...</h1>}>
+          <CountryCases country={country} />
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }
-
-export default App;
