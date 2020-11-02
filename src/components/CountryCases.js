@@ -37,7 +37,8 @@ const CountryCases = ({ country }) => {
   };
   return (
     <div>
-      <p>Last Updated {state?.lastUpdate}</p>
+      {state?.lastUpdate ? <p>Last Updated {state?.lastUpdate}</p> : <p></p>}
+
       <Bar
         width={200}
         height={200}
